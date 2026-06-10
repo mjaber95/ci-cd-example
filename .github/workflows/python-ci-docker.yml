@@ -27,6 +27,18 @@ jobs:
           python -m pip install --upgrade pip cython wheel
           pip install -r tests/requirements.txt
 
-      # 4. Run tests
+      # 4. Build test image
+      - name: Build test Docker image
+        run: docker build -f tests/Dockerfile.test -t api-test .
+
+      # 5. Run test container
+      - name: Run testing Container
+        run: docker run -d -e PORT=8000 --name api-test-container -p 8080:8000 api-test
+
+      # 6. Run tests
       - name: Run tests on API
         run: make
+
+      # Last step: Stop and remove container
+      - name: Stop API Container
+        run: docker stop api-test-container && docker rm api-test-container
