@@ -1,5 +1,5 @@
 # python-ci.yml
-name: Test API on Push
+name: Test API on Push with Docker
 
 on:
   push:
